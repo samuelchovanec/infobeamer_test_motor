@@ -44,7 +44,3 @@ for i in range(100):
     if delay_divided > 0.001:
         delay_divided = delay_divided / 1.05
     print(step_count_multiplied, delay_divided)
-
-# Repeat for other loops in your original script with similar modifications
-
-# Clean up is not necessary in the hosted environment
