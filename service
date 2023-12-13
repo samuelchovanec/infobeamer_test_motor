@@ -26,10 +26,10 @@ for pin, value in zip(MODE, RESOLUTION['Full']):
 total_duration = 15  # Total duration of the sequence in seconds
 phase_duration = 5  # Duration of each phase (acceleration, constant speed, deceleration) in seconds
 
-# Initial delay (start slow)
-initial_delay = 0.02
-# Minimum delay (maximum speed)
-minimum_delay = 0.005
+# Initial delay (start faster)
+initial_delay = 0.01  # Reduced from 0.02
+# Minimum delay (maximum speed, reduced to make it faster)
+minimum_delay = 0.002  # Reduced from 0.005
 # Calculate the rate of change for delay
 delay_change_per_step = (initial_delay - minimum_delay) / (phase_duration / initial_delay)
 
