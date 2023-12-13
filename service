@@ -27,9 +27,9 @@ total_duration = 15  # Total duration of the sequence in seconds
 phase_duration = 5  # Duration of each phase (acceleration, constant speed, deceleration) in seconds
 
 # Initial delay (start faster)
-initial_delay = 0.01  # Reduced from 0.02
-# Minimum delay (maximum speed, reduced to make it faster)
-minimum_delay = 0.002  # Reduced from 0.005
+initial_delay = 0.01 / 3  # Three times faster than the previous initial delay
+# Minimum delay (maximum speed, reduced to make it three times faster)
+minimum_delay = 0.002 / 3  # Three times faster than the previous minimum delay
 # Calculate the rate of change for delay
 delay_change_per_step = (initial_delay - minimum_delay) / (phase_duration / initial_delay)
 
