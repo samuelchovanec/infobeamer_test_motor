@@ -28,18 +28,19 @@ delay = 0.02
 total_duration = 15
 # Time to increase or decrease the delay to change speed
 time_to_change_delay = 0.0005
-# Time to increase the delay to slow down (smaller value for more gradual slowing down)
-time_to_slow_down_delay = 0.0007
 # Calculate the total steps based on initial delay
 total_steps = int(total_duration / (2 * delay))
+
+# Define the phase proportions (e.g., 1/3 for speeding up, 1/3 for constant speed, 1/3 for slowing down)
+phase_proportion = total_steps // 3
 
 for x in range(total_steps):
     device.gpio.set_pin_value(STEP, 1)
     sleep(delay)
     device.gpio.set_pin_value(STEP, 0)
     sleep(delay)
-    # Speed up in the first third, slow down in the last third, constant speed in between
-    if x < total_steps // 3:
+    # Speed up in the first phase, slow down in the last phase, constant speed in between
+    if x < phase_proportion:
         delay = max(0.005, delay - time_to_change_delay)
-    elif x > 2 * total_steps // 3:
-        delay += time_to_slow_down_delay
+    elif x >= 2 * phase_proportion:
+        delay = min(0.02, delay + time_to_change_delay)
