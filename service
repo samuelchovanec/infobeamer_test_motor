@@ -22,12 +22,12 @@ RESOLUTION = {'Full': (0, 0, 0)}
 for pin, value in zip(MODE, RESOLUTION['Full']):
     device.gpio.set_pin_value(pin, value)
 
-# Initial delay (increase this to slow down the initial speed)
-delay = 0.01
+# Initial delay (larger value for slower start)
+delay = 0.02
 # Total duration of operation in seconds
 total_duration = 15
-# Time to increase the delay to slow down the motor
-time_to_increase_delay = 0.05
+# Time to increase or decrease the delay to change speed
+time_to_change_delay = 0.0005
 # The number of steps for the motor to take in total
 total_steps = int(total_duration / (2 * delay))
 
@@ -36,6 +36,8 @@ for x in range(total_steps):
     sleep(delay)
     device.gpio.set_pin_value(STEP, 0)
     sleep(delay)
-    # Increase the delay to slow down
-    if x >= total_steps // 2:
-        delay += time_to_increase_delay / (total_steps // 2)
+    # Speed up in the first third, slow down in the last third
+    if x < total_steps // 3:
+        delay = max(0.005, delay - time_to_change_delay)
+    elif x > 2 * total_steps // 3:
+        delay += time_to_change_delay
