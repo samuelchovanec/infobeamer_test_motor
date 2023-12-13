@@ -49,3 +49,6 @@ for x in range(total_steps):
         delay = max(minimum_delay, delay - delay_change_per_step)
     elif x > 2 * total_steps // 3:  # Deceleration
         delay = min(initial_delay, delay + delay_change_per_step)
+
+# 5-second pause at the end
+sleep(5)
