@@ -18,30 +18,24 @@ MODE = (14, 15, 18)
 for pin in MODE:
     device.gpio.setup_pin(pin, "out")
 
-RESOLUTION = {'Full': (0, 0, 0),
-              'Half': (1, 0, 0),
-              '1/4': (0, 1, 0),
-              '1/8': (1, 1, 0),
-              '1/16': (0, 0, 1),
-              '1/32': (1, 0, 1)}
-
-# Set the resolution mode
+RESOLUTION = {'Full': (0, 0, 0)}
 for pin, value in zip(MODE, RESOLUTION['Full']):
     device.gpio.set_pin_value(pin, value)
 
-step_count = SPR 
-delay = .005
-delay_divided = delay
-step_count_multiplied = step_count
+# Initial delay (increase this to slow down the initial speed)
+delay = 0.01
+# Total duration of operation in seconds
+total_duration = 15
+# Time to increase the delay to slow down the motor
+time_to_increase_delay = 0.05
+# The number of steps for the motor to take in total
+total_steps = int(total_duration / (2 * delay))
 
-for i in range(100):
-    delay = delay_divided
-    for x in range(step_count_multiplied):
-        device.gpio.set_pin_value(STEP, 1)
-        sleep(delay)
-        device.gpio.set_pin_value(STEP, 0)
-        sleep(delay)
-    step_count_multiplied += 1
-    if delay_divided > 0.001:
-        delay_divided = delay_divided / 1.05
-    print(step_count_multiplied, delay_divided)
+for x in range(total_steps):
+    device.gpio.set_pin_value(STEP, 1)
+    sleep(delay)
+    device.gpio.set_pin_value(STEP, 0)
+    sleep(delay)
+    # Increase the delay to slow down
+    if x >= total_steps // 2:
+        delay += time_to_increase_delay / (total_steps // 2)
