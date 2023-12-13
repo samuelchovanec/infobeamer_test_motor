@@ -28,7 +28,9 @@ delay = 0.02
 total_duration = 15
 # Time to increase or decrease the delay to change speed
 time_to_change_delay = 0.0005
-# The number of steps for the motor to take in total
+# Time to increase the delay to slow down (make this larger for faster slowing down)
+time_to_slow_down_delay = 0.001
+# Calculate the total steps based on initial delay
 total_steps = int(total_duration / (2 * delay))
 
 for x in range(total_steps):
@@ -36,8 +38,8 @@ for x in range(total_steps):
     sleep(delay)
     device.gpio.set_pin_value(STEP, 0)
     sleep(delay)
-    # Speed up in the first third, slow down in the last third
-    if x < total_steps // 3:
+    # Speed up in the first quarter, slow down in the last quarter, constant speed in between
+    if x < total_steps // 4:
         delay = max(0.005, delay - time_to_change_delay)
-    elif x > 2 * total_steps // 3:
-        delay += time_to_change_delay
+    elif x > 3 * total_steps // 4:
+        delay += time_to_slow_down_delay
